@@ -169,23 +169,21 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
         textView.textContainerInset = NSSize(width: 15, height: 15)
         textView.isRichText = false
         textView.drawsBackground = true
-        textView.textColor = .labelColor
         
         let scrollView = NSScrollView()
         scrollView.documentView = textView
         scrollView.hasVerticalScroller = false
-        scrollView.borderType = .bezelBorder
+        scrollView.borderType = .noBorder
         scrollView.autohidesScrollers = true
-        scrollView.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05)
         
         container.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: container.topAnchor, constant: 0),
+            scrollView.topAnchor.constraint(equalTo: container.topAnchor, constant: 20),
             scrollView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
             scrollView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
-            scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: 0),
-            container.heightAnchor.constraint(equalToConstant: 180)
+            scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -20),
+            scrollView.heightAnchor.constraint(equalToConstant: 140)
         ])
         
         // Add rounded corners
