@@ -86,11 +86,22 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
         explanationTextView.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05)
         explanationTextView.font = .systemFont(ofSize: 12)
         explanationTextView.textContainerInset = NSSize(width: 10, height: 10)
+        explanationTextView.isRichText = false
+        explanationTextView.importsGraphics = false
+        explanationTextView.isVerticallyResizable = true
+        explanationTextView.isHorizontallyResizable = false
+        explanationTextView.textContainer?.widthTracksTextView = true
+        explanationTextView.textContainer?.containerSize = NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude)
         
         let explanationScrollView = NSScrollView()
         explanationScrollView.documentView = explanationTextView
-        explanationScrollView.hasVerticalScroller = false
-        explanationScrollView.borderType = .noBorder
+        explanationScrollView.hasVerticalScroller = true
+        explanationScrollView.hasHorizontalScroller = false
+        explanationScrollView.borderType = .bezelBorder
+        explanationScrollView.autohidesScrollers = true
+        explanationScrollView.wantsLayer = true
+        explanationScrollView.layer?.cornerRadius = 8
+        explanationScrollView.layer?.masksToBounds = true
         
         // Setup controls
         setupControls()
@@ -108,10 +119,16 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
         // Counter row
         let counterLabelTitle = NSTextField(labelWithString: "🔢 Counter")
         counterLabelTitle.font = .systemFont(ofSize: 13, weight: .semibold)
+        
+        // Configure counter label constraints
+        counterLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        counterLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
+        
         let counterStack = NSStackView(views: [decrementButton, counterLabel, incrementButton])
         counterStack.orientation = .horizontal
         counterStack.spacing = 20
         counterStack.alignment = .centerY
+        counterStack.distribution = .fillProportionally
         gridView.addRow(with: [counterLabelTitle, counterStack])
         
         // Toggle row
@@ -208,6 +225,8 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
         counterLabel.alignment = .center
         counterLabel.font = .systemFont(ofSize: 36, weight: .bold)
         counterLabel.textColor = .labelColor
+        counterLabel.backgroundColor = .clear
+        counterLabel.drawsBackground = false
         
         decrementButton.image = NSImage(systemSymbolName: "minus.circle.fill", accessibilityDescription: "Decrement")
         decrementButton.bezelStyle = .regularSquare
