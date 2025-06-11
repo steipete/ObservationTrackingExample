@@ -8,7 +8,6 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
     private var dataModel: SharedDataModel?
     
     // UI Elements
-    private let explanationTextView = NSTextView()
     private let messageTextField = NSTextField()
     private let counterLabel = NSTextField()
     private let decrementButton = NSButton()
@@ -52,148 +51,44 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
     }
     
     override func loadView() {
-        view = NSView(frame: NSRect(x: 0, y: 0, width: 550, height: 700))
+        view = NSView(frame: NSRect(x: 0, y: 0, width: 550, height: 750))
         view.wantsLayer = true
         
-        // Header
-        let titleIcon = NSImageView()
-        titleIcon.image = NSImage(systemSymbolName: "macwindow", accessibilityDescription: nil)
-        titleIcon.contentTintColor = .systemOrange
-        titleIcon.symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 30, weight: .regular)
-        
-        let titleLabel = NSTextField(labelWithString: "AppKit Window")
-        titleLabel.font = .systemFont(ofSize: 24, weight: .bold)
-        titleLabel.alignment = .center
-        
-        let subtitleLabel = NSTextField(labelWithString: "This window uses traditional AppKit with automatic observation")
-        subtitleLabel.font = .systemFont(ofSize: 13)
-        subtitleLabel.textColor = .secondaryLabelColor
-        subtitleLabel.alignment = .center
-        
-        // Explanation
-        explanationTextView.string = """
-        🔍 How AppKit Observation Works:
-        
-        1. In viewWillLayout(), we read properties from our @Observable model
-        2. AppKit automatically tracks these property accesses
-        3. When any tracked property changes, viewWillLayout() is called again
-        4. The UI updates without manual KVO or notifications!
-        
-        ⚡️ Try it: Change values in either window and watch them sync instantly!
-        """
-        explanationTextView.isEditable = false
-        explanationTextView.isSelectable = false
-        explanationTextView.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05)
-        explanationTextView.font = .systemFont(ofSize: 12)
-        explanationTextView.textContainerInset = NSSize(width: 10, height: 10)
-        explanationTextView.isRichText = false
-        explanationTextView.importsGraphics = false
-        explanationTextView.isVerticallyResizable = true
-        explanationTextView.isHorizontallyResizable = false
-        explanationTextView.textContainer?.widthTracksTextView = true
-        explanationTextView.textContainer?.containerSize = NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude)
-        
-        let explanationScrollView = NSScrollView()
-        explanationScrollView.documentView = explanationTextView
-        explanationScrollView.hasVerticalScroller = true
-        explanationScrollView.hasHorizontalScroller = false
-        explanationScrollView.borderType = .bezelBorder
-        explanationScrollView.autohidesScrollers = true
-        explanationScrollView.wantsLayer = true
-        explanationScrollView.layer?.cornerRadius = 8
-        explanationScrollView.layer?.masksToBounds = true
-        
-        // Setup controls
-        setupControls()
-        
-        // Create grid view for controls
-        let gridView = NSGridView()
-        gridView.rowSpacing = 20
-        gridView.columnSpacing = 16
-        
-        // Message row
-        let messageLabel = NSTextField(labelWithString: "📝 Message")
-        messageLabel.font = .systemFont(ofSize: 13, weight: .semibold)
-        gridView.addRow(with: [messageLabel, messageTextField])
-        
-        // Counter row
-        let counterLabelTitle = NSTextField(labelWithString: "🔢 Counter")
-        counterLabelTitle.font = .systemFont(ofSize: 13, weight: .semibold)
-        
-        // Configure counter label constraints
-        counterLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        counterLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
-        
-        let counterStack = NSStackView(views: [decrementButton, counterLabel, incrementButton])
-        counterStack.orientation = .horizontal
-        counterStack.spacing = 20
-        counterStack.alignment = .centerY
-        counterStack.distribution = .fillProportionally
-        gridView.addRow(with: [counterLabelTitle, counterStack])
-        
-        // Toggle row
-        let toggleLabel = NSTextField(labelWithString: "🎛️ Toggle")
-        toggleLabel.font = .systemFont(ofSize: 13, weight: .semibold)
-        gridView.addRow(with: [toggleLabel, enabledCheckbox])
-        
-        // Color row
-        let colorLabel = NSTextField(labelWithString: "🎨 Theme Color")
-        colorLabel.font = .systemFont(ofSize: 13, weight: .semibold)
-        gridView.addRow(with: [colorLabel, colorPopupButton])
-        
-        // Slider row
-        let sliderLabelTitle = NSTextField(labelWithString: "📊 Value")
-        sliderLabelTitle.font = .systemFont(ofSize: 13, weight: .semibold)
-        let sliderStack = NSStackView(views: [slider, sliderValueLabel])
-        sliderStack.orientation = .horizontal
-        sliderStack.spacing = 12
-        sliderStack.alignment = .centerY
-        gridView.addRow(with: [sliderLabelTitle, sliderStack])
-        
-        // Configure grid columns
-        gridView.column(at: 0).xPlacement = .trailing
-        gridView.column(at: 1).xPlacement = .leading
-        gridView.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        
-        // Footer
-        let syncIcon = NSImageView()
-        syncIcon.image = NSImage(systemSymbolName: "arrow.left.arrow.right.circle.fill", accessibilityDescription: nil)
-        syncIcon.contentTintColor = .systemOrange
-        
-        let syncLabel = NSTextField(labelWithString: "Changes sync automatically with SwiftUI window")
-        syncLabel.font = .systemFont(ofSize: 11)
-        syncLabel.textColor = .secondaryLabelColor
-        
-        let footerStack = NSStackView(views: [syncIcon, syncLabel, updateIndicator])
-        footerStack.orientation = .horizontal
-        footerStack.spacing = 8
-        footerStack.alignment = .centerY
-        
-        // Main stack
-        let mainStack = NSStackView(views: [
-            titleIcon,
-            titleLabel,
-            subtitleLabel,
-            explanationScrollView,
-            gridView,
-            NSView(), // Spacer
-            resetButton,
-            footerStack
-        ])
+        // Create main container stack
+        let mainStack = NSStackView()
         mainStack.orientation = .vertical
-        mainStack.spacing = 16
-        mainStack.edgeInsets = NSEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        mainStack.setCustomSpacing(8, after: titleIcon)
-        mainStack.setCustomSpacing(4, after: titleLabel)
-        mainStack.setCustomSpacing(24, after: subtitleLabel)
-        mainStack.setCustomSpacing(24, after: explanationScrollView)
+        mainStack.spacing = 0
+        mainStack.edgeInsets = NSEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
-        // Configure spacer
-        if let spacer = mainStack.arrangedSubviews.first(where: { $0.className == "NSView" }) {
-            spacer.setContentHuggingPriority(.defaultLow, for: .vertical)
-        }
+        // Header section
+        let headerView = createHeaderSection()
+        mainStack.addArrangedSubview(headerView)
         
-        // Add constraints
+        // Explanation section
+        let explanationView = createExplanationSection()
+        mainStack.addArrangedSubview(explanationView)
+        
+        // Controls section
+        let controlsContainer = NSView()
+        controlsContainer.wantsLayer = true
+        
+        let controlsView = createControlsSection()
+        controlsContainer.addSubview(controlsView)
+        controlsView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            controlsView.topAnchor.constraint(equalTo: controlsContainer.topAnchor, constant: 20),
+            controlsView.leadingAnchor.constraint(equalTo: controlsContainer.leadingAnchor, constant: 20),
+            controlsView.trailingAnchor.constraint(equalTo: controlsContainer.trailingAnchor, constant: -20),
+            controlsView.bottomAnchor.constraint(lessThanOrEqualTo: controlsContainer.bottomAnchor, constant: -20)
+        ])
+        
+        mainStack.addArrangedSubview(controlsContainer)
+        
+        // Footer section
+        let footerView = createFooterSection()
+        mainStack.addArrangedSubview(footerView)
+        
+        // Add main stack to view
         view.addSubview(mainStack)
         mainStack.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -203,22 +98,224 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
             mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        // Set fixed heights
-        explanationScrollView.heightAnchor.constraint(equalToConstant: 120).isActive = true
-        
-        // Make text field wider
-        messageTextField.widthAnchor.constraint(greaterThanOrEqualToConstant: 300).isActive = true
-        colorPopupButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 150).isActive = true
-        slider.widthAnchor.constraint(greaterThanOrEqualToConstant: 200).isActive = true
+        // Configure controls growth priority
+        headerView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        explanationView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        controlsContainer.setContentHuggingPriority(.defaultLow, for: .vertical)
+        footerView.setContentHuggingPriority(.defaultHigh, for: .vertical)
     }
     
-    private func setupControls() {
-        // Message text field
+    private func createHeaderSection() -> NSView {
+        let container = NSView()
+        container.wantsLayer = true
+        container.layer?.backgroundColor = NSColor.controlBackgroundColor.cgColor
+        
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.spacing = 8
+        stack.alignment = .centerX
+        
+        // Icon
+        let titleIcon = NSImageView()
+        titleIcon.image = NSImage(systemSymbolName: "macwindow", accessibilityDescription: nil)
+        titleIcon.contentTintColor = .systemOrange
+        titleIcon.symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 30, weight: .regular)
+        stack.addArrangedSubview(titleIcon)
+        
+        // Title
+        let titleLabel = NSTextField(labelWithString: "AppKit Window")
+        titleLabel.font = .systemFont(ofSize: 24, weight: .bold)
+        titleLabel.alignment = .center
+        stack.addArrangedSubview(titleLabel)
+        
+        // Subtitle
+        let subtitleLabel = NSTextField(labelWithString: "This window uses traditional AppKit with automatic observation")
+        subtitleLabel.font = .systemFont(ofSize: 13)
+        subtitleLabel.textColor = .secondaryLabelColor
+        subtitleLabel.alignment = .center
+        stack.addArrangedSubview(subtitleLabel)
+        
+        container.addSubview(stack)
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: container.topAnchor, constant: 20),
+            stack.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
+            stack.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
+            stack.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -20)
+        ])
+        
+        return container
+    }
+    
+    private func createExplanationSection() -> NSView {
+        let container = NSView()
+        container.wantsLayer = true
+        
+        let textView = NSTextView()
+        textView.string = """
+        🔍 How AppKit Observation Works:
+        
+        1. In viewWillLayout(), we read properties from our @Observable model
+        2. AppKit automatically tracks these property accesses
+        3. When any tracked property changes, viewWillLayout() is called again
+        4. The UI updates without manual KVO or notifications!
+        
+        ⚡️ Try it: Change values in either window and watch them sync instantly!
+        """
+        textView.isEditable = false
+        textView.isSelectable = true
+        textView.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05)
+        textView.font = .systemFont(ofSize: 12)
+        textView.textContainerInset = NSSize(width: 15, height: 15)
+        textView.isRichText = false
+        textView.drawsBackground = true
+        
+        let scrollView = NSScrollView()
+        scrollView.documentView = textView
+        scrollView.hasVerticalScroller = false
+        scrollView.borderType = .noBorder
+        scrollView.autohidesScrollers = true
+        
+        container.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: container.topAnchor, constant: 20),
+            scrollView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
+            scrollView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
+            scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -20),
+            scrollView.heightAnchor.constraint(equalToConstant: 140)
+        ])
+        
+        // Add rounded corners
+        scrollView.wantsLayer = true
+        scrollView.layer?.cornerRadius = 8
+        scrollView.layer?.masksToBounds = true
+        
+        return container
+    }
+    
+    private func createControlsSection() -> NSView {
+        let gridView = NSGridView()
+        gridView.rowSpacing = 24
+        gridView.columnSpacing = 20
+        
+        // Message row
+        let messageLabel = createLabel("📝 Message")
+        setupMessageTextField()
+        gridView.addRow(with: [messageLabel, messageTextField])
+        
+        // Counter row
+        let counterLabelTitle = createLabel("🔢 Counter")
+        let counterStack = createCounterStack()
+        gridView.addRow(with: [counterLabelTitle, counterStack])
+        
+        // Toggle row
+        let toggleLabel = createLabel("🎛️ Toggle")
+        setupEnabledCheckbox()
+        gridView.addRow(with: [toggleLabel, enabledCheckbox])
+        
+        // Color row
+        let colorLabel = createLabel("🎨 Theme Color")
+        setupColorPopup()
+        gridView.addRow(with: [colorLabel, colorPopupButton])
+        
+        // Slider row
+        let sliderLabel = createLabel("📊 Value")
+        let sliderStack = createSliderStack()
+        gridView.addRow(with: [sliderLabel, sliderStack])
+        
+        // Configure grid columns
+        gridView.column(at: 0).xPlacement = .trailing
+        gridView.column(at: 1).xPlacement = .leading
+        
+        // Add reset button below grid
+        let containerStack = NSStackView()
+        containerStack.orientation = .vertical
+        containerStack.spacing = 30
+        containerStack.addArrangedSubview(gridView)
+        
+        setupResetButton()
+        containerStack.addArrangedSubview(resetButton)
+        containerStack.setCustomSpacing(40, after: gridView)
+        
+        return containerStack
+    }
+    
+    private func createLabel(_ text: String) -> NSTextField {
+        let label = NSTextField(labelWithString: text)
+        label.font = .systemFont(ofSize: 13, weight: .semibold)
+        label.alignment = .right
+        return label
+    }
+    
+    private func createCounterStack() -> NSView {
+        // Setup counter controls
+        setupCounterControls()
+        
+        let stack = NSStackView(views: [decrementButton, counterLabel, incrementButton])
+        stack.orientation = .horizontal
+        stack.spacing = 16
+        stack.alignment = .centerY
+        
+        return stack
+    }
+    
+    private func createSliderStack() -> NSView {
+        setupSliderControls()
+        
+        let stack = NSStackView(views: [slider, sliderValueLabel])
+        stack.orientation = .horizontal
+        stack.spacing = 12
+        stack.alignment = .centerY
+        
+        return stack
+    }
+    
+    private func createFooterSection() -> NSView {
+        let container = NSView()
+        container.wantsLayer = true
+        container.layer?.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0.5).cgColor
+        
+        let stack = NSStackView()
+        stack.orientation = .horizontal
+        stack.spacing = 8
+        stack.alignment = .centerY
+        
+        let syncIcon = NSImageView()
+        syncIcon.image = NSImage(systemSymbolName: "arrow.left.arrow.right.circle.fill", accessibilityDescription: nil)
+        syncIcon.contentTintColor = .systemOrange
+        
+        let syncLabel = NSTextField(labelWithString: "Changes sync automatically with SwiftUI window")
+        syncLabel.font = .systemFont(ofSize: 11)
+        syncLabel.textColor = .secondaryLabelColor
+        
+        setupUpdateIndicator()
+        
+        stack.addArrangedSubview(syncIcon)
+        stack.addArrangedSubview(syncLabel)
+        stack.addArrangedSubview(updateIndicator)
+        
+        container.addSubview(stack)
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stack.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            stack.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            container.heightAnchor.constraint(equalToConstant: 44)
+        ])
+        
+        return container
+    }
+    
+    private func setupMessageTextField() {
         messageTextField.placeholderString = "Type here and watch it appear in SwiftUI window..."
         messageTextField.bezelStyle = .roundedBezel
         messageTextField.font = .systemFont(ofSize: 13)
-        
-        // Counter
+        messageTextField.widthAnchor.constraint(greaterThanOrEqualToConstant: 300).isActive = true
+    }
+    
+    private func setupCounterControls() {
+        // Counter label
+        counterLabel.stringValue = "0"
         counterLabel.isEditable = false
         counterLabel.isBordered = false
         counterLabel.isSelectable = false
@@ -227,20 +324,28 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
         counterLabel.textColor = .labelColor
         counterLabel.backgroundColor = .clear
         counterLabel.drawsBackground = false
+        counterLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
         
+        // Decrement button
         decrementButton.image = NSImage(systemSymbolName: "minus.circle.fill", accessibilityDescription: "Decrement")
         decrementButton.bezelStyle = .regularSquare
         decrementButton.isBordered = false
         decrementButton.contentTintColor = .systemRed
         decrementButton.symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 24, weight: .regular)
         
+        // Increment button
         incrementButton.image = NSImage(systemSymbolName: "plus.circle.fill", accessibilityDescription: "Increment")
         incrementButton.bezelStyle = .regularSquare
         incrementButton.isBordered = false
         incrementButton.contentTintColor = .systemGreen
         incrementButton.symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 24, weight: .regular)
-        
-        // Color picker
+    }
+    
+    private func setupEnabledCheckbox() {
+        enabledCheckbox.font = .systemFont(ofSize: 13)
+    }
+    
+    private func setupColorPopup() {
         colorPopupButton.removeAllItems()
         let colors = [("Blue", NSColor.systemBlue), ("Red", NSColor.systemRed), 
                      ("Green", NSColor.systemGreen), ("Yellow", NSColor.systemYellow)]
@@ -254,19 +359,28 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
                 item.image = colorWell.snapshot()
             }
         }
-        
-        // Slider
+        colorPopupButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 150).isActive = true
+    }
+    
+    private func setupSliderControls() {
+        // Slider value label
+        sliderValueLabel.stringValue = "50%"
         sliderValueLabel.isEditable = false
         sliderValueLabel.isBordered = false
         sliderValueLabel.isSelectable = false
         sliderValueLabel.font = .monospacedDigitSystemFont(ofSize: 13, weight: .regular)
         sliderValueLabel.alignment = .right
+        sliderValueLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 45).isActive = true
         
+        // Slider
         slider.sliderType = .linear
         slider.minValue = 0
         slider.maxValue = 100
-        
-        // Reset button
+        slider.doubleValue = 50
+        slider.widthAnchor.constraint(greaterThanOrEqualToConstant: 200).isActive = true
+    }
+    
+    private func setupResetButton() {
         resetButton.title = "Reset All Values"
         resetButton.image = NSImage(systemSymbolName: "arrow.counterclockwise.circle.fill", accessibilityDescription: nil)
         resetButton.bezelStyle = .rounded
@@ -274,8 +388,9 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
         resetButton.keyEquivalent = "r"
         resetButton.keyEquivalentModifierMask = .command
         resetButton.imagePosition = .imageLeading
-        
-        // Update indicator
+    }
+    
+    private func setupUpdateIndicator() {
         updateIndicator.stringValue = "Last update: Just now"
         updateIndicator.font = .systemFont(ofSize: 11)
         updateIndicator.textColor = .tertiaryLabelColor
@@ -397,13 +512,13 @@ extension NSView {
 final class AppKitWindowController: NSWindowController {
     convenience init(dataModel: SharedDataModel) {
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 550, height: 650),
+            contentRect: NSRect(x: 0, y: 0, width: 550, height: 750),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
             backing: .buffered,
             defer: false
         )
         window.title = "AppKit Observer Example"
-        window.minSize = NSSize(width: 500, height: 600)
+        window.minSize = NSSize(width: 500, height: 700)
         window.center()
         
         // Position the window to the right of the main window
