@@ -1,10 +1,14 @@
 # ObservationTrackingExample
 
-A demonstration of Swift's @Observable macro working seamlessly across SwiftUI and AppKit on macOS 15+.
+A demonstration of Swift's @Observable macro working seamlessly across SwiftUI, UIKit, and AppKit on iOS 18+ and macOS 15+.
 
 ## Overview
 
-This example shows how the new `NSObservationTrackingEnabled` feature in macOS 15 brings automatic UI updates to AppKit, similar to what SwiftUI has always had. When enabled, AppKit views can automatically track dependencies on `@Observable` objects and update when those properties change - no KVO or manual notifications needed!
+This example shows how the new observation tracking features in iOS 18 and macOS 15 bring automatic UI updates to UIKit and AppKit, similar to what SwiftUI has always had. When enabled, UIKit and AppKit views can automatically track dependencies on `@Observable` objects and update when those properties change - no KVO or manual notifications needed!
+
+The project includes:
+- **macOS Example**: SwiftUI + AppKit windows that sync data automatically
+- **iOS Example**: UIKit split view controller with automatic observation tracking and custom traits
 
 ## Key Features
 
@@ -15,7 +19,7 @@ This example shows how the new `NSObservationTrackingEnabled` feature in macOS 1
 
 ## Requirements
 
-- macOS 15.0+
+- iOS 18.0+ / macOS 15.0+
 - Xcode 16.0+
 - Swift 6.0+
 
@@ -24,8 +28,16 @@ This example shows how the new `NSObservationTrackingEnabled` feature in macOS 1
 ### 1. Enable Observation Tracking
 
 Add to your `Info.plist`:
+
+For macOS:
 ```xml
 <key>NSObservationTrackingEnabled</key>
+<true/>
+```
+
+For iOS:
+```xml
+<key>UIObservationTrackingEnabled</key>
 <true/>
 ```
 
@@ -41,9 +53,20 @@ final class SharedDataModel: Sendable {
 }
 ```
 
-### 3. Use in AppKit
+### 3. Use in UIKit/AppKit
 
-In your `viewWillLayout()` or other update methods:
+In UIKit's `viewWillLayoutSubviews()`:
+```swift
+override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
+    
+    // Reading these properties automatically sets up tracking!
+    textLabel.text = model.message
+    counterLabel.text = "\(model.counter)"
+}
+```
+
+In AppKit's `viewWillLayout()`:
 ```swift
 override func viewWillLayout() {
     super.viewWillLayout()
@@ -54,23 +77,51 @@ override func viewWillLayout() {
 }
 ```
 
-That's it! AppKit now tracks these property accesses and recalls `viewWillLayout()` whenever they change.
+That's it! UIKit/AppKit now tracks these property accesses and recalls the method whenever they change.
 
 ## What This Example Demonstrates
 
+### macOS Example
 - **Text synchronization** between SwiftUI TextField and AppKit NSTextField
 - **Counter updates** that work from buttons in either framework
 - **Toggle state** sharing
 - **Color selection** that updates the AppKit window's background
 - **Slider values** that sync in real-time
 
+### iOS Example
+- **Split view controller** with master-detail pattern
+- **Custom traits** for passing observable objects through view hierarchy
+- **Theme switching** (Light/Dark/Auto) that applies app-wide
+- **Async data loading** with proper UI feedback
+- **Automatic UI updates** without delegates or notifications
+
 ## Architecture
 
 The app uses a clean, modern architecture:
-- Single `@Observable` data model shared between both windows
+- Single `@Observable` data model shared between windows/views
 - No delegates, no notifications, no bindings
-- Automatic dependency tracking in both frameworks
+- Automatic dependency tracking in all frameworks
 - Type-safe, Swift 6 compliant code throughout
+
+### iOS Custom Traits Pattern
+
+The iOS example demonstrates how to use custom traits with observable objects:
+
+```swift
+// Define a custom trait
+struct AppModelTrait: UITraitDefinition {
+    static let defaultValue: AppModel? = nil
+}
+
+// Inject at the root
+rootViewController.traitOverrides.appModel = appModel
+
+// Access anywhere in the hierarchy
+override func viewWillLayoutSubviews() {
+    guard let model = traitCollection.appModel else { return }
+    // Use model properties - automatic tracking!
+}
+```
 
 ## License
 
