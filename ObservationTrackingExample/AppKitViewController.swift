@@ -4,7 +4,7 @@ import Observation
 /// AppKit view controller demonstrating automatic observation tracking
 /// No KVO, no bindings - just read properties in viewWillLayout()!
 @MainActor
-final class AppKitViewController: NSViewController, NSTextFieldDelegate {
+final class AppKitViewController: NSViewController {
     private var dataModel: SharedDataModel?
     
     // UI Elements
@@ -490,10 +490,12 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
 
 // MARK: - NSTextFieldDelegate
 
-extension AppKitViewController {
-    func controlTextDidChange(_ obj: Notification) {
-        if let textField = obj.object as? NSTextField {
-            dataModel?.message = textField.stringValue
+extension AppKitViewController: NSTextFieldDelegate {
+    nonisolated func controlTextDidChange(_ obj: Notification) {
+        Task { @MainActor in
+            if let textField = obj.object as? NSTextField {
+                dataModel?.message = textField.stringValue
+            }
         }
     }
 }

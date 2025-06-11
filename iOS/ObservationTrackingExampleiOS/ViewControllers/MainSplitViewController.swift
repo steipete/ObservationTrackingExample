@@ -14,7 +14,7 @@ final class MainSplitViewController: UISplitViewController {
     // MARK: - Properties
     
     /// The app model instance
-    private let appModel = AppModel()
+    private let model = AppModel()
     
     /// Master view controller
     private let masterViewController: MasterViewController
@@ -50,8 +50,8 @@ final class MainSplitViewController: UISplitViewController {
         maximumPrimaryColumnWidth = 400
         
         // Provide app model to child controllers through traits
-        provideAppModel(appModel, to: masterNavigationController)
-        provideAppModel(appModel, to: detailNavigationController)
+        provideAppModel(model, to: masterNavigationController)
+        provideAppModel(model, to: detailNavigationController)
     }
     
     required init?(coder: NSCoder) {
@@ -70,7 +70,7 @@ final class MainSplitViewController: UISplitViewController {
         
         // Apply initial theme
         if let window = view.window {
-            appModel.applyTheme(to: window)
+            model.applyTheme(to: window)
         }
     }
     
@@ -79,7 +79,7 @@ final class MainSplitViewController: UISplitViewController {
     private func setupObservation() {
         // Observe theme changes
         _ = withObservationTracking {
-            appModel.sharedData.theme
+            model.sharedData.theme
         } onChange: { [weak self] in
             Task { @MainActor in
                 self?.handleThemeChange()
@@ -88,7 +88,7 @@ final class MainSplitViewController: UISplitViewController {
         
         // Observe display mode changes
         _ = withObservationTracking {
-            appModel.preferredDisplayMode
+            model.preferredDisplayMode
         } onChange: { [weak self] in
             Task { @MainActor in
                 self?.handleDisplayModeChange()
@@ -101,12 +101,12 @@ final class MainSplitViewController: UISplitViewController {
     private func handleThemeChange() {
         // Apply theme to window
         if let window = view.window {
-            appModel.applyTheme(to: window)
+            model.applyTheme(to: window)
         }
         
         // Re-establish observation
         _ = withObservationTracking {
-            appModel.sharedData.theme
+            model.sharedData.theme
         } onChange: { [weak self] in
             Task { @MainActor in
                 self?.handleThemeChange()
@@ -116,11 +116,11 @@ final class MainSplitViewController: UISplitViewController {
     
     private func handleDisplayModeChange() {
         // Update split view display mode
-        preferredDisplayMode = appModel.preferredDisplayMode
+        preferredDisplayMode = model.preferredDisplayMode
         
         // Re-establish observation
         _ = withObservationTracking {
-            appModel.preferredDisplayMode
+            model.preferredDisplayMode
         } onChange: { [weak self] in
             Task { @MainActor in
                 self?.handleDisplayModeChange()
@@ -137,13 +137,13 @@ extension MainSplitViewController: UISplitViewControllerDelegate {
                            collapseSecondary secondaryViewController: UIViewController,
                            onto primaryViewController: UIViewController) -> Bool {
         // If no item is selected, show the master view in compact mode
-        return appModel.sharedData.selectedItem == nil
+        return model.sharedData.selectedItem == nil
     }
     
     func splitViewController(_ svc: UISplitViewController, 
                            topColumnForCollapsingToProposedTopColumn proposedTopColumn: UISplitViewController.Column) -> UISplitViewController.Column {
         // Show master view if no selection
-        if appModel.sharedData.selectedItem == nil {
+        if model.sharedData.selectedItem == nil {
             return .primary
         }
         return proposedTopColumn

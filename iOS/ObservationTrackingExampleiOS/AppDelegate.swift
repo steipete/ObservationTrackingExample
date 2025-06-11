@@ -12,7 +12,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        print("UIObservationTrackingEnabled: \(UIView.isObservationTrackingEnabled)")
+        #if DEBUG
+        print("ObservationTrackingExample iOS - Automatic observation tracking enabled via Info.plist")
+        #endif
         return true
     }
 

@@ -33,7 +33,8 @@ extension UIMutableTraits {
 
 /// Main application model that manages shared state
 @Observable
-final class AppModel {
+@MainActor
+final class AppModel: Sendable {
     // MARK: - Properties
     
     /// The shared data model
@@ -60,7 +61,9 @@ final class AppModel {
     // MARK: - Initialization
     
     init() {
-        print("AppModel initialized with observation tracking enabled: \(UIView.isObservationTrackingEnabled)")
+        #if DEBUG
+        print("AppModel initialized - Automatic observation tracking enabled via Info.plist")
+        #endif
     }
     
     // MARK: - Methods

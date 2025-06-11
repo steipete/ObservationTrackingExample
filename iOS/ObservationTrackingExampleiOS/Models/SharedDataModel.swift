@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import UIKit
 import Observation
 
 /// A shared data model that demonstrates observable properties
 @Observable
-final class SharedDataModel {
+@MainActor
+final class SharedDataModel: Sendable {
     // MARK: - Observable Properties
     
     /// The main text content
