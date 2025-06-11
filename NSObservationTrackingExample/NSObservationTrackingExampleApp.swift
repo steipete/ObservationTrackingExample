@@ -7,11 +7,11 @@
 
 import SwiftUI
 import AppKit
-import Combine
+import Observation
 
 @main
 struct NSObservationTrackingExampleApp: App {
-    @StateObject private var appState = AppState()
+    @State private var appState = AppState()
     
     var body: some Scene {
         WindowGroup {
@@ -25,8 +25,9 @@ struct NSObservationTrackingExampleApp: App {
 }
 
 // Shared app state that manages both windows
+@Observable
 @MainActor
-final class AppState: ObservableObject {
+final class AppState: Sendable {
     let dataModel = SharedDataModel()
     private var appKitWindowController: AppKitWindowController?
     

@@ -1,13 +1,15 @@
 import Cocoa
 import Observation
 
-class AppKitViewController: NSViewController {
+/// AppKit view controller demonstrating automatic observation tracking
+/// No KVO, no bindings - just read properties in viewWillLayout()!
+@MainActor
+final class AppKitViewController: NSViewController, NSTextFieldDelegate {
     private var dataModel: SharedDataModel?
     
     // UI Elements
     private let explanationTextView = NSTextView()
     private let messageTextField = NSTextField()
-    private let messageLabel = NSTextField()
     private let counterLabel = NSTextField()
     private let decrementButton = NSButton()
     private let incrementButton = NSButton()
@@ -25,6 +27,7 @@ class AppKitViewController: NSViewController {
         // Setup actions (no bindings needed with @Observable!)
         messageTextField.target = self
         messageTextField.action = #selector(messageChanged(_:))
+        messageTextField.delegate = self
         
         enabledCheckbox.target = self
         enabledCheckbox.action = #selector(enabledChanged(_:))
@@ -43,8 +46,7 @@ class AppKitViewController: NSViewController {
         
         slider.target = self
         slider.action = #selector(sliderChanged(_:))
-        slider.minValue = 0
-        slider.maxValue = 100
+        slider.isContinuous = true
         
         view.needsLayout = true
     }
@@ -53,7 +55,7 @@ class AppKitViewController: NSViewController {
         view = NSView(frame: NSRect(x: 0, y: 0, width: 550, height: 700))
         view.wantsLayer = true
         
-        // Header with title and icon
+        // Header
         let titleIcon = NSImageView()
         titleIcon.image = NSImage(systemSymbolName: "macwindow", accessibilityDescription: nil)
         titleIcon.contentTintColor = .systemOrange
@@ -68,12 +70,7 @@ class AppKitViewController: NSViewController {
         subtitleLabel.textColor = .secondaryLabelColor
         subtitleLabel.alignment = .center
         
-        let titleStack = NSStackView(views: [titleIcon, titleLabel, subtitleLabel])
-        titleStack.orientation = .vertical
-        titleStack.spacing = 8
-        titleStack.alignment = .centerX
-        
-        // Setup explanation text
+        // Explanation
         explanationTextView.string = """
         🔍 How AppKit Observation Works:
         
@@ -95,20 +92,116 @@ class AppKitViewController: NSViewController {
         explanationScrollView.hasVerticalScroller = false
         explanationScrollView.borderType = .noBorder
         
-        // Message input setup
-        messageLabel.stringValue = "Text Input"
-        messageLabel.font = .systemFont(ofSize: 13, weight: .semibold)
-        messageLabel.isEditable = false
-        messageLabel.isBordered = false
-        messageLabel.isSelectable = false
+        // Setup controls
+        setupControls()
         
+        // Create grid view for controls
+        let gridView = NSGridView()
+        gridView.rowSpacing = 20
+        gridView.columnSpacing = 16
+        
+        // Message row
+        let messageLabel = NSTextField(labelWithString: "📝 Message")
+        messageLabel.font = .systemFont(ofSize: 13, weight: .semibold)
+        gridView.addRow(with: [messageLabel, messageTextField])
+        
+        // Counter row
+        let counterLabelTitle = NSTextField(labelWithString: "🔢 Counter")
+        counterLabelTitle.font = .systemFont(ofSize: 13, weight: .semibold)
+        let counterStack = NSStackView(views: [decrementButton, counterLabel, incrementButton])
+        counterStack.orientation = .horizontal
+        counterStack.spacing = 20
+        counterStack.alignment = .centerY
+        gridView.addRow(with: [counterLabelTitle, counterStack])
+        
+        // Toggle row
+        let toggleLabel = NSTextField(labelWithString: "🎛️ Toggle")
+        toggleLabel.font = .systemFont(ofSize: 13, weight: .semibold)
+        gridView.addRow(with: [toggleLabel, enabledCheckbox])
+        
+        // Color row
+        let colorLabel = NSTextField(labelWithString: "🎨 Theme Color")
+        colorLabel.font = .systemFont(ofSize: 13, weight: .semibold)
+        gridView.addRow(with: [colorLabel, colorPopupButton])
+        
+        // Slider row
+        let sliderLabelTitle = NSTextField(labelWithString: "📊 Value")
+        sliderLabelTitle.font = .systemFont(ofSize: 13, weight: .semibold)
+        let sliderStack = NSStackView(views: [slider, sliderValueLabel])
+        sliderStack.orientation = .horizontal
+        sliderStack.spacing = 12
+        sliderStack.alignment = .centerY
+        gridView.addRow(with: [sliderLabelTitle, sliderStack])
+        
+        // Configure grid columns
+        gridView.column(at: 0).xPlacement = .trailing
+        gridView.column(at: 1).xPlacement = .leading
+        gridView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        
+        // Footer
+        let syncIcon = NSImageView()
+        syncIcon.image = NSImage(systemSymbolName: "arrow.left.arrow.right.circle.fill", accessibilityDescription: nil)
+        syncIcon.contentTintColor = .systemOrange
+        
+        let syncLabel = NSTextField(labelWithString: "Changes sync automatically with SwiftUI window")
+        syncLabel.font = .systemFont(ofSize: 11)
+        syncLabel.textColor = .secondaryLabelColor
+        
+        let footerStack = NSStackView(views: [syncIcon, syncLabel, updateIndicator])
+        footerStack.orientation = .horizontal
+        footerStack.spacing = 8
+        footerStack.alignment = .centerY
+        
+        // Main stack
+        let mainStack = NSStackView(views: [
+            titleIcon,
+            titleLabel,
+            subtitleLabel,
+            explanationScrollView,
+            gridView,
+            NSView(), // Spacer
+            resetButton,
+            footerStack
+        ])
+        mainStack.orientation = .vertical
+        mainStack.spacing = 16
+        mainStack.edgeInsets = NSEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        mainStack.setCustomSpacing(8, after: titleIcon)
+        mainStack.setCustomSpacing(4, after: titleLabel)
+        mainStack.setCustomSpacing(24, after: subtitleLabel)
+        mainStack.setCustomSpacing(24, after: explanationScrollView)
+        
+        // Configure spacer
+        if let spacer = mainStack.arrangedSubviews.first(where: { $0.className == "NSView" }) {
+            spacer.setContentHuggingPriority(.defaultLow, for: .vertical)
+        }
+        
+        // Add constraints
+        view.addSubview(mainStack)
+        mainStack.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mainStack.topAnchor.constraint(equalTo: view.topAnchor),
+            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        // Set fixed heights
+        explanationScrollView.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        
+        // Make text field wider
+        messageTextField.widthAnchor.constraint(greaterThanOrEqualToConstant: 300).isActive = true
+        colorPopupButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 150).isActive = true
+        slider.widthAnchor.constraint(greaterThanOrEqualToConstant: 200).isActive = true
+    }
+    
+    private func setupControls() {
+        // Message text field
         messageTextField.placeholderString = "Type here and watch it appear in SwiftUI window..."
-        messageTextField.isEditable = true
-        messageTextField.isBordered = true
         messageTextField.bezelStyle = .roundedBezel
         messageTextField.font = .systemFont(ofSize: 13)
         
-        // Counter display setup
+        // Counter
         counterLabel.isEditable = false
         counterLabel.isBordered = false
         counterLabel.isSelectable = false
@@ -116,7 +209,6 @@ class AppKitViewController: NSViewController {
         counterLabel.font = .systemFont(ofSize: 36, weight: .bold)
         counterLabel.textColor = .labelColor
         
-        // Style the increment/decrement buttons
         decrementButton.image = NSImage(systemSymbolName: "minus.circle.fill", accessibilityDescription: "Decrement")
         decrementButton.bezelStyle = .regularSquare
         decrementButton.isBordered = false
@@ -129,7 +221,7 @@ class AppKitViewController: NSViewController {
         incrementButton.contentTintColor = .systemGreen
         incrementButton.symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 24, weight: .regular)
         
-        // Color picker setup
+        // Color picker
         colorPopupButton.removeAllItems()
         let colors = [("Blue", NSColor.systemBlue), ("Red", NSColor.systemRed), 
                      ("Green", NSColor.systemGreen), ("Yellow", NSColor.systemYellow)]
@@ -144,21 +236,24 @@ class AppKitViewController: NSViewController {
             }
         }
         
-        // Slider setup
+        // Slider
         sliderValueLabel.isEditable = false
         sliderValueLabel.isBordered = false
         sliderValueLabel.isSelectable = false
         sliderValueLabel.font = .monospacedDigitSystemFont(ofSize: 13, weight: .regular)
+        sliderValueLabel.alignment = .right
         
         slider.sliderType = .linear
-        slider.numberOfTickMarks = 11
-        slider.allowsTickMarkValuesOnly = false
+        slider.minValue = 0
+        slider.maxValue = 100
         
-        // Reset button setup
+        // Reset button
         resetButton.title = "Reset All Values"
         resetButton.image = NSImage(systemSymbolName: "arrow.counterclockwise.circle.fill", accessibilityDescription: nil)
         resetButton.bezelStyle = .rounded
+        resetButton.controlSize = .large
         resetButton.keyEquivalent = "r"
+        resetButton.keyEquivalentModifierMask = .command
         resetButton.imagePosition = .imageLeading
         
         // Update indicator
@@ -168,113 +263,6 @@ class AppKitViewController: NSViewController {
         updateIndicator.isEditable = false
         updateIndicator.isBordered = false
         updateIndicator.alignment = .center
-        
-        // Create styled group boxes
-        let messageStack = NSStackView(views: [messageLabel, messageTextField])
-        messageStack.orientation = .vertical
-        messageStack.spacing = 8
-        messageStack.alignment = .leading
-        messageStack.setHuggingPriority(.defaultHigh, for: .vertical)
-        
-        // Make text field full width
-        messageTextField.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            messageTextField.widthAnchor.constraint(equalTo: messageStack.widthAnchor)
-        ])
-        
-        let messageBox = createGroupBox(title: "📝 Message", content: messageStack)
-        
-        let counterStack = NSStackView(views: [decrementButton, counterLabel, incrementButton])
-        counterStack.orientation = .horizontal
-        counterStack.spacing = 20
-        counterStack.alignment = .centerY
-        let counterBox = createGroupBox(title: "🔢 Counter", content: counterStack)
-        
-        let colorLabel = NSTextField(labelWithString: "Theme Color")
-        colorLabel.font = .systemFont(ofSize: 13, weight: .medium)
-        let colorStack = NSStackView(views: [colorLabel, colorPopupButton])
-        colorStack.orientation = .horizontal
-        colorStack.spacing = 10
-        
-        let sliderLabel = NSTextField(labelWithString: "Value")
-        sliderLabel.font = .systemFont(ofSize: 13, weight: .medium)
-        let sliderLabelStack = NSStackView(views: [sliderLabel, sliderValueLabel])
-        sliderLabelStack.orientation = .horizontal
-        sliderLabelStack.spacing = 10
-        
-        let sliderStack = NSStackView(views: [sliderLabelStack, slider])
-        sliderStack.orientation = .vertical
-        sliderStack.spacing = 8
-        sliderStack.alignment = .leading
-        sliderStack.setHuggingPriority(.defaultHigh, for: .vertical)
-        
-        // Make slider full width
-        slider.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            slider.widthAnchor.constraint(equalTo: sliderStack.widthAnchor)
-        ])
-        
-        let controlsStack = NSStackView(views: [enabledCheckbox, colorStack, sliderStack])
-        controlsStack.orientation = .vertical
-        controlsStack.spacing = 16
-        controlsStack.alignment = .leading
-        let controlsBox = createGroupBox(title: "🎛️ Controls", content: controlsStack)
-        
-        // Footer with sync indicator
-        let syncIcon = NSImageView()
-        syncIcon.image = NSImage(systemSymbolName: "arrow.left.arrow.right.circle.fill", accessibilityDescription: nil)
-        syncIcon.contentTintColor = .systemOrange
-        
-        let syncLabel = NSTextField(labelWithString: "Changes sync automatically with SwiftUI window")
-        syncLabel.font = .systemFont(ofSize: 11)
-        syncLabel.textColor = .secondaryLabelColor
-        
-        let footerStack = NSStackView(views: [syncIcon, syncLabel, updateIndicator])
-        footerStack.orientation = .horizontal
-        footerStack.spacing = 8
-        footerStack.alignment = .centerY
-        
-        // Add a spacer view
-        let spacerView = NSView()
-        spacerView.setContentHuggingPriority(.defaultLow, for: .vertical)
-        
-        let mainStack = NSStackView(views: [
-            titleStack,
-            explanationScrollView,
-            messageBox,
-            counterBox,
-            controlsBox,
-            spacerView,
-            resetButton,
-            footerStack
-        ])
-        mainStack.orientation = .vertical
-        mainStack.spacing = 16
-        mainStack.edgeInsets = NSEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        mainStack.alignment = .leading
-        mainStack.distribution = .fill
-        
-        // Set constraints for explanation view
-        explanationScrollView.heightAnchor.constraint(equalToConstant: 120).isActive = true
-        
-        view.addSubview(mainStack)
-        mainStack.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            mainStack.topAnchor.constraint(equalTo: view.topAnchor),
-            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
-        // Make all boxes stretch to full width
-        for subview in mainStack.arrangedSubviews {
-            if subview != spacerView {
-                subview.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    subview.widthAnchor.constraint(equalTo: mainStack.widthAnchor, constant: -40) // Account for edge insets
-                ])
-            }
-        }
     }
     
     override func viewWillLayout() {
@@ -317,7 +305,7 @@ class AppKitViewController: NSViewController {
             view.animator().layer?.backgroundColor = backgroundColor.cgColor
         }
         
-        // Update the indicator to show when updates happen
+        // Update the indicator
         updateIndicator.stringValue = "Last update: Just now"
         lastUpdateTime = Date()
         
@@ -329,16 +317,7 @@ class AppKitViewController: NSViewController {
         })
     }
     
-    private func createGroupBox(title: String, content: NSView) -> NSBox {
-        let box = NSBox()
-        box.title = title
-        box.titleFont = .systemFont(ofSize: 13, weight: .medium)
-        box.contentView = content
-        box.boxType = .primary
-        box.cornerRadius = 8
-        box.contentViewMargins = NSSize(width: 16, height: 16)
-        return box
-    }
+    // MARK: - Actions
     
     @objc private func decrementCounter() {
         dataModel?.decrementCounter()
@@ -371,7 +350,18 @@ class AppKitViewController: NSViewController {
     }
 }
 
-// Helper extension for creating image snapshots
+// MARK: - NSTextFieldDelegate
+
+extension AppKitViewController {
+    func controlTextDidChange(_ obj: Notification) {
+        if let textField = obj.object as? NSTextField {
+            dataModel?.message = textField.stringValue
+        }
+    }
+}
+
+// MARK: - Helper Extensions
+
 extension NSView {
     func snapshot() -> NSImage? {
         guard let bitmapRep = bitmapImageRepForCachingDisplay(in: bounds) else { return nil }
@@ -382,10 +372,13 @@ extension NSView {
     }
 }
 
-class AppKitWindowController: NSWindowController {
+// MARK: - Window Controller
+
+@MainActor
+final class AppKitWindowController: NSWindowController {
     convenience init(dataModel: SharedDataModel) {
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 550, height: 700),
+            contentRect: NSRect(x: 0, y: 0, width: 550, height: 650),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
             backing: .buffered,
             defer: false
