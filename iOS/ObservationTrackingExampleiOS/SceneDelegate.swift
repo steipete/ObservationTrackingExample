@@ -17,11 +17,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Create window
         window = UIWindow(windowScene: windowScene)
         
-        // Create the main split view controller
-        let splitViewController = MainSplitViewController()
+        // Create the root view controller with UIKit/SwiftUI split
+        let rootViewController = RootViewController()
+        let navigationController = UINavigationController(rootViewController: rootViewController)
+        navigationController.navigationBar.prefersLargeTitles = true
         
         // Set as root and make visible
-        window?.rootViewController = splitViewController
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
 
