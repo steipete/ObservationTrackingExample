@@ -13,7 +13,6 @@ class UIKitDemoViewController: UIViewController {
     // MARK: - Properties
     
     private let model: SharedDataModel
-    private var observationTracking: ObservationTracking?
     
     // UI Components
     private let scrollView = UIScrollView()
@@ -40,9 +39,6 @@ class UIKitDemoViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        observationTracking?.invalidate()
-    }
     
     // MARK: - Lifecycle
     
@@ -52,8 +48,6 @@ class UIKitDemoViewController: UIViewController {
         setupViews()
         setupConstraints()
         setupActions()
-        startObservation()
-        updateUI()
     }
     
     // MARK: - Setup
@@ -184,40 +178,32 @@ class UIKitDemoViewController: UIViewController {
     
     // MARK: - Observation
     
-    private func startObservation() {
-        observationTracking = ObservationTracking { [weak self] in
-            self?.updateUI()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        // This is where the magic happens!
+        // UIKit tracks these property accesses and re-calls this method when they change
+        
+        // Update UI based on model state
+        textLabel.text = model.text
+        counterLabel.text = "\(model.counter)"
+        
+        // Update loading state
+        if model.isLoading {
+            activityIndicator.startAnimating()
+            loadDataButton.isEnabled = false
+        } else {
+            activityIndicator.stopAnimating()
+            loadDataButton.isEnabled = true
         }
-    }
-    
-    private func updateUI() {
-        ObservationTracking.withTracking {
-            // Access the properties we want to observe
-            textLabel.text = model.text
-            counterLabel.text = "\(model.counter)"
-            
-            // Update loading state
-            if model.isLoading {
-                activityIndicator.startAnimating()
-                loadDataButton.isEnabled = false
-            } else {
-                activityIndicator.stopAnimating()
-                loadDataButton.isEnabled = true
-            }
-            
-            // Update theme selection
-            if let themeIndex = SharedDataModel.Theme.allCases.firstIndex(of: model.theme) {
-                themeSegmentedControl.selectedSegmentIndex = themeIndex
-            }
-            
-            // Apply theme
-            view.window?.overrideUserInterfaceStyle = model.theme.userInterfaceStyle
-        } onChange: { [weak self] in
-            // This closure is called when any of the accessed properties change
-            DispatchQueue.main.async {
-                self?.updateUI()
-            }
+        
+        // Update theme selection
+        if let themeIndex = SharedDataModel.Theme.allCases.firstIndex(of: model.theme) {
+            themeSegmentedControl.selectedSegmentIndex = themeIndex
         }
+        
+        // Apply theme
+        view.window?.overrideUserInterfaceStyle = model.theme.userInterfaceStyle
     }
     
     // MARK: - Actions

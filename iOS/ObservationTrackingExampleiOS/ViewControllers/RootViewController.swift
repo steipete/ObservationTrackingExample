@@ -16,7 +16,6 @@ class RootViewController: UIViewController {
     private let model = SharedDataModel()
     private var uikitViewController: UIKitDemoViewController!
     private var swiftUIHostingController: UIHostingController<SwiftUIDemoView>!
-    private var themeObservationTracking: ObservationTracking?
     
     // Container views
     private let containerStackView = UIStackView()
@@ -36,9 +35,6 @@ class RootViewController: UIViewController {
         setupConstraints()
         setupChildControllers()
         updateLayoutForTraitCollection()
-        
-        // Start observing theme changes
-        startThemeObservation()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -49,10 +45,6 @@ class RootViewController: UIViewController {
         })
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        updateLayoutForTraitCollection()
-    }
     
     // MARK: - Setup
     
@@ -198,25 +190,10 @@ class RootViewController: UIViewController {
     
     // MARK: - Theme Observation
     
-    private func startThemeObservation() {
-        themeObservationTracking = ObservationTracking { [weak self] in
-            self?.applyTheme()
-        }
-    }
-    
-    private func applyTheme() {
-        ObservationTracking.withTracking {
-            // Access the theme property to track it
-            view.window?.overrideUserInterfaceStyle = model.theme.userInterfaceStyle
-        } onChange: { [weak self] in
-            // Re-apply theme when it changes
-            DispatchQueue.main.async {
-                self?.applyTheme()
-            }
-        }
-    }
-    
-    deinit {
-        themeObservationTracking?.invalidate()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        // Apply theme when it changes
+        view.window?.overrideUserInterfaceStyle = model.theme.userInterfaceStyle
     }
 }
