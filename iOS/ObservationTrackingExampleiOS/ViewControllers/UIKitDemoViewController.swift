@@ -12,7 +12,10 @@ class UIKitDemoViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let model: SharedDataModel
+    /// Access the shared data model through traits
+    private var model: SharedDataModel? {
+        traitCollection.appModel?.sharedData
+    }
     
     // UI Components
     private let scrollView = UIScrollView()
@@ -30,8 +33,7 @@ class UIKitDemoViewController: UIViewController {
     
     // MARK: - Initialization
     
-    init(model: SharedDataModel) {
-        self.model = model
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -73,15 +75,19 @@ class UIKitDemoViewController: UIViewController {
         explanationLabel.font = .preferredFont(forTextStyle: .body)
         explanationLabel.textColor = .secondaryLabel
         explanationLabel.text = """
-        This UIKit view uses the new Observation framework to track changes in the shared model. 
+        This UIKit view demonstrates two powerful iOS 18+ features:
         
-        Key features:
-        • Automatic UI updates when observed properties change
-        • Fine-grained tracking of specific properties
-        • No need for KVO or NotificationCenter
-        • Seamless integration with UIKit
+        1. Automatic Observation Tracking:
+        • UI updates automatically in viewWillLayoutSubviews()
+        • No manual KVO or NotificationCenter needed
+        • Just read properties and UIKit tracks dependencies
         
-        The counter and text values are synchronized with the SwiftUI view.
+        2. Custom Traits Pattern:
+        • Observable objects passed through the trait collection
+        • Access model via traitCollection.appModel
+        • SwiftUI-like environment values for UIKit
+        
+        The model is shared with SwiftUI through the same trait system!
         """
         
         // Configure text label
@@ -185,11 +191,11 @@ class UIKitDemoViewController: UIViewController {
         // UIKit tracks these property accesses and re-calls this method when they change
         
         // Update UI based on model state
-        textLabel.text = model.text
-        counterLabel.text = "\(model.counter)"
+        textLabel.text = model?.text ?? "No data"
+        counterLabel.text = "\(model?.counter ?? 0)"
         
         // Update loading state
-        if model.isLoading {
+        if model?.isLoading == true {
             activityIndicator.startAnimating()
             loadDataButton.isEnabled = false
         } else {
@@ -198,33 +204,36 @@ class UIKitDemoViewController: UIViewController {
         }
         
         // Update theme selection
-        if let themeIndex = SharedDataModel.Theme.allCases.firstIndex(of: model.theme) {
+        if let currentTheme = model?.theme,
+           let themeIndex = SharedDataModel.Theme.allCases.firstIndex(of: currentTheme) {
             themeSegmentedControl.selectedSegmentIndex = themeIndex
         }
         
         // Apply theme
-        view.window?.overrideUserInterfaceStyle = model.theme.userInterfaceStyle
+        if let theme = model?.theme {
+            view.window?.overrideUserInterfaceStyle = theme.userInterfaceStyle
+        }
     }
     
     // MARK: - Actions
     
     @objc private func incrementTapped() {
-        model.incrementCounter()
+        model?.incrementCounter()
     }
     
     @objc private func resetTapped() {
-        model.resetCounter()
+        model?.resetCounter()
     }
     
     @objc private func loadDataTapped() {
         Task {
-            await model.loadData()
+            await model?.loadData()
         }
     }
     
     @objc private func themeChanged() {
         let selectedIndex = themeSegmentedControl.selectedSegmentIndex
         guard selectedIndex >= 0, selectedIndex < SharedDataModel.Theme.allCases.count else { return }
-        model.theme = SharedDataModel.Theme.allCases[selectedIndex]
+        model?.theme = SharedDataModel.Theme.allCases[selectedIndex]
     }
 }

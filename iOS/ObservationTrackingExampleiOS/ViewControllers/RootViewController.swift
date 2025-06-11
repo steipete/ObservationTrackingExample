@@ -13,9 +13,9 @@ class RootViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let model = SharedDataModel()
+    private let model = AppModel()
     private var uikitViewController: UIKitDemoViewController!
-    private var swiftUIHostingController: UIHostingController<SwiftUIDemoView>!
+    private var swiftUIHostingController: UIViewController!
     
     // Container views
     private let containerStackView = UIStackView()
@@ -121,8 +121,15 @@ class RootViewController: UIViewController {
     }
     
     private func setupChildControllers() {
+        // Set app model in trait overrides for this controller
+        traitOverrides.appModel = model
+        
         // Create UIKit view controller
-        uikitViewController = UIKitDemoViewController(model: model)
+        uikitViewController = UIKitDemoViewController()
+        
+        // Pass the app model through traits
+        uikitViewController.traitOverrides.appModel = model
+        
         addChild(uikitViewController)
         uikitContainerView.addSubview(uikitViewController.view)
         uikitViewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -137,8 +144,13 @@ class RootViewController: UIViewController {
         uikitViewController.didMove(toParent: self)
         
         // Create SwiftUI hosting controller
-        let swiftUIView = SwiftUIDemoView(model: model)
+        let swiftUIView = SwiftUIDemoView()
+            .appModel(model)
         swiftUIHostingController = UIHostingController(rootView: swiftUIView)
+        
+        // Pass the app model through traits to SwiftUI host
+        swiftUIHostingController.traitOverrides.appModel = model
+        
         addChild(swiftUIHostingController)
         swiftUIContainerView.addSubview(swiftUIHostingController.view)
         swiftUIHostingController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -194,6 +206,6 @@ class RootViewController: UIViewController {
         super.viewWillLayoutSubviews()
         
         // Apply theme when it changes
-        view.window?.overrideUserInterfaceStyle = model.theme.userInterfaceStyle
+        view.window?.overrideUserInterfaceStyle = model.sharedData.theme.userInterfaceStyle
     }
 }
