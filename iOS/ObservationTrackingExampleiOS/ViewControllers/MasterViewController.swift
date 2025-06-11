@@ -1,6 +1,6 @@
 //
 //  MasterViewController.swift
-//  NSObservationTrackingExample
+//  ObservationTrackingExample
 //
 //  Master view controller showing the list of items
 //

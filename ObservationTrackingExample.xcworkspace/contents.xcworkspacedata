@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:NSObservationTrackingExample.xcodeproj">
+      location = "group:ObservationTrackingExample.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:iOS/NSObservationTrackingExampleiOS.xcodeproj">
+      location = "group:iOS/ObservationTrackingExampleiOS.xcodeproj">
    </FileRef>
 </Workspace>

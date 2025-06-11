@@ -12,37 +12,37 @@
 			containerPortal = 780773D32DF8E8DE00D935C7 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 780773DA2DF8E8DE00D935C7;
-			remoteInfo = NSObservationTrackingExample;
+			remoteInfo = ObservationTrackingExample;
 		};
 		780773F32DF8E8DF00D935C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 780773D32DF8E8DE00D935C7 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 780773DA2DF8E8DE00D935C7;
-			remoteInfo = NSObservationTrackingExample;
+			remoteInfo = ObservationTrackingExample;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		780773DB2DF8E8DE00D935C7 /* NSObservationTrackingExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NSObservationTrackingExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		780773E82DF8E8DF00D935C7 /* NSObservationTrackingExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NSObservationTrackingExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		780773F22DF8E8DF00D935C7 /* NSObservationTrackingExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NSObservationTrackingExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		780773DB2DF8E8DE00D935C7 /* ObservationTrackingExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ObservationTrackingExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		780773E82DF8E8DF00D935C7 /* ObservationTrackingExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ObservationTrackingExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		780773F22DF8E8DF00D935C7 /* ObservationTrackingExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ObservationTrackingExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		780773DD2DF8E8DE00D935C7 /* NSObservationTrackingExample */ = {
+		780773DD2DF8E8DE00D935C7 /* ObservationTrackingExample */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = NSObservationTrackingExample;
+			path = ObservationTrackingExample;
 			sourceTree = "<group>";
 		};
-		780773EB2DF8E8DF00D935C7 /* NSObservationTrackingExampleTests */ = {
+		780773EB2DF8E8DF00D935C7 /* ObservationTrackingExampleTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = NSObservationTrackingExampleTests;
+			path = ObservationTrackingExampleTests;
 			sourceTree = "<group>";
 		};
-		780773F52DF8E8DF00D935C7 /* NSObservationTrackingExampleUITests */ = {
+		780773F52DF8E8DF00D935C7 /* ObservationTrackingExampleUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = NSObservationTrackingExampleUITests;
+			path = ObservationTrackingExampleUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,9 +75,9 @@
 		780773D22DF8E8DE00D935C7 = {
 			isa = PBXGroup;
 			children = (
-				780773DD2DF8E8DE00D935C7 /* NSObservationTrackingExample */,
-				780773EB2DF8E8DF00D935C7 /* NSObservationTrackingExampleTests */,
-				780773F52DF8E8DF00D935C7 /* NSObservationTrackingExampleUITests */,
+				780773DD2DF8E8DE00D935C7 /* ObservationTrackingExample */,
+				780773EB2DF8E8DF00D935C7 /* ObservationTrackingExampleTests */,
+				780773F52DF8E8DF00D935C7 /* ObservationTrackingExampleUITests */,
 				780773DC2DF8E8DE00D935C7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -85,9 +85,9 @@
 		780773DC2DF8E8DE00D935C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				780773DB2DF8E8DE00D935C7 /* NSObservationTrackingExample.app */,
-				780773E82DF8E8DF00D935C7 /* NSObservationTrackingExampleTests.xctest */,
-				780773F22DF8E8DF00D935C7 /* NSObservationTrackingExampleUITests.xctest */,
+				780773DB2DF8E8DE00D935C7 /* ObservationTrackingExample.app */,
+				780773E82DF8E8DF00D935C7 /* ObservationTrackingExampleTests.xctest */,
+				780773F22DF8E8DF00D935C7 /* ObservationTrackingExampleUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,9 +95,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		780773DA2DF8E8DE00D935C7 /* NSObservationTrackingExample */ = {
+		780773DA2DF8E8DE00D935C7 /* ObservationTrackingExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 780773FC2DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "NSObservationTrackingExample" */;
+			buildConfigurationList = 780773FC2DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "ObservationTrackingExample" */;
 			buildPhases = (
 				780773D72DF8E8DE00D935C7 /* Sources */,
 				780773D82DF8E8DE00D935C7 /* Frameworks */,
@@ -108,18 +108,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				780773DD2DF8E8DE00D935C7 /* NSObservationTrackingExample */,
+				780773DD2DF8E8DE00D935C7 /* ObservationTrackingExample */,
 			);
-			name = NSObservationTrackingExample;
+			name = ObservationTrackingExample;
 			packageProductDependencies = (
 			);
-			productName = NSObservationTrackingExample;
-			productReference = 780773DB2DF8E8DE00D935C7 /* NSObservationTrackingExample.app */;
+			productName = ObservationTrackingExample;
+			productReference = 780773DB2DF8E8DE00D935C7 /* ObservationTrackingExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		780773E72DF8E8DF00D935C7 /* NSObservationTrackingExampleTests */ = {
+		780773E72DF8E8DF00D935C7 /* ObservationTrackingExampleTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 780773FF2DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "NSObservationTrackingExampleTests" */;
+			buildConfigurationList = 780773FF2DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "ObservationTrackingExampleTests" */;
 			buildPhases = (
 				780773E42DF8E8DF00D935C7 /* Sources */,
 				780773E52DF8E8DF00D935C7 /* Frameworks */,
@@ -131,18 +131,18 @@
 				780773EA2DF8E8DF00D935C7 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				780773EB2DF8E8DF00D935C7 /* NSObservationTrackingExampleTests */,
+				780773EB2DF8E8DF00D935C7 /* ObservationTrackingExampleTests */,
 			);
-			name = NSObservationTrackingExampleTests;
+			name = ObservationTrackingExampleTests;
 			packageProductDependencies = (
 			);
-			productName = NSObservationTrackingExampleTests;
-			productReference = 780773E82DF8E8DF00D935C7 /* NSObservationTrackingExampleTests.xctest */;
+			productName = ObservationTrackingExampleTests;
+			productReference = 780773E82DF8E8DF00D935C7 /* ObservationTrackingExampleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		780773F12DF8E8DF00D935C7 /* NSObservationTrackingExampleUITests */ = {
+		780773F12DF8E8DF00D935C7 /* ObservationTrackingExampleUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 780774022DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "NSObservationTrackingExampleUITests" */;
+			buildConfigurationList = 780774022DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "ObservationTrackingExampleUITests" */;
 			buildPhases = (
 				780773EE2DF8E8DF00D935C7 /* Sources */,
 				780773EF2DF8E8DF00D935C7 /* Frameworks */,
@@ -154,13 +154,13 @@
 				780773F42DF8E8DF00D935C7 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				780773F52DF8E8DF00D935C7 /* NSObservationTrackingExampleUITests */,
+				780773F52DF8E8DF00D935C7 /* ObservationTrackingExampleUITests */,
 			);
-			name = NSObservationTrackingExampleUITests;
+			name = ObservationTrackingExampleUITests;
 			packageProductDependencies = (
 			);
-			productName = NSObservationTrackingExampleUITests;
-			productReference = 780773F22DF8E8DF00D935C7 /* NSObservationTrackingExampleUITests.xctest */;
+			productName = ObservationTrackingExampleUITests;
+			productReference = 780773F22DF8E8DF00D935C7 /* ObservationTrackingExampleUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -186,7 +186,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 780773D62DF8E8DE00D935C7 /* Build configuration list for PBXProject "NSObservationTrackingExample" */;
+			buildConfigurationList = 780773D62DF8E8DE00D935C7 /* Build configuration list for PBXProject "ObservationTrackingExample" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -200,9 +200,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				780773DA2DF8E8DE00D935C7 /* NSObservationTrackingExample */,
-				780773E72DF8E8DF00D935C7 /* NSObservationTrackingExampleTests */,
-				780773F12DF8E8DF00D935C7 /* NSObservationTrackingExampleUITests */,
+				780773DA2DF8E8DE00D935C7 /* ObservationTrackingExample */,
+				780773E72DF8E8DF00D935C7 /* ObservationTrackingExampleTests */,
+				780773F12DF8E8DF00D935C7 /* ObservationTrackingExampleUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -258,12 +258,12 @@
 /* Begin PBXTargetDependency section */
 		780773EA2DF8E8DF00D935C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 780773DA2DF8E8DE00D935C7 /* NSObservationTrackingExample */;
+			target = 780773DA2DF8E8DE00D935C7 /* ObservationTrackingExample */;
 			targetProxy = 780773E92DF8E8DF00D935C7 /* PBXContainerItemProxy */;
 		};
 		780773F42DF8E8DF00D935C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 780773DA2DF8E8DE00D935C7 /* NSObservationTrackingExample */;
+			target = 780773DA2DF8E8DE00D935C7 /* ObservationTrackingExample */;
 			targetProxy = 780773F32DF8E8DF00D935C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -403,14 +403,14 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = NSObservationTrackingExample/Info.plist;
+				INFOPLIST_FILE = ObservationTrackingExample/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.NSObservationTrackingExample;
+				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.ObservationTrackingExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -435,14 +435,14 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = NSObservationTrackingExample/Info.plist;
+				INFOPLIST_FILE = ObservationTrackingExample/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.NSObservationTrackingExample;
+				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.ObservationTrackingExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -463,13 +463,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.NSObservationTrackingExampleTests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.ObservationTrackingExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NSObservationTrackingExample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NSObservationTrackingExample";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ObservationTrackingExample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ObservationTrackingExample";
 			};
 			name = Debug;
 		};
@@ -483,13 +483,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.NSObservationTrackingExampleTests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.ObservationTrackingExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NSObservationTrackingExample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NSObservationTrackingExample";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ObservationTrackingExample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ObservationTrackingExample";
 			};
 			name = Release;
 		};
@@ -501,13 +501,13 @@
 				DEVELOPMENT_TEAM = Y5PE65HELJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.NSObservationTrackingExampleUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.ObservationTrackingExampleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = NSObservationTrackingExample;
+				TEST_TARGET_NAME = ObservationTrackingExample;
 			};
 			name = Debug;
 		};
@@ -519,20 +519,20 @@
 				DEVELOPMENT_TEAM = Y5PE65HELJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.NSObservationTrackingExampleUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.ObservationTrackingExampleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = NSObservationTrackingExample;
+				TEST_TARGET_NAME = ObservationTrackingExample;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		780773D62DF8E8DE00D935C7 /* Build configuration list for PBXProject "NSObservationTrackingExample" */ = {
+		780773D62DF8E8DE00D935C7 /* Build configuration list for PBXProject "ObservationTrackingExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				780773FA2DF8E8DF00D935C7 /* Debug */,
@@ -541,7 +541,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		780773FC2DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "NSObservationTrackingExample" */ = {
+		780773FC2DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "ObservationTrackingExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				780773FD2DF8E8DF00D935C7 /* Debug */,
@@ -550,7 +550,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		780773FF2DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "NSObservationTrackingExampleTests" */ = {
+		780773FF2DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "ObservationTrackingExampleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				780774002DF8E8DF00D935C7 /* Debug */,
@@ -559,7 +559,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		780774022DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "NSObservationTrackingExampleUITests" */ = {
+		780774022DF8E8DF00D935C7 /* Build configuration list for PBXNativeTarget "ObservationTrackingExampleUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				780774032DF8E8DF00D935C7 /* Debug */,

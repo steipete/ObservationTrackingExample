@@ -1,13 +1,13 @@
 //
-//  NSObservationTrackingExampleTests.swift
-//  NSObservationTrackingExampleTests
+//  ObservationTrackingExampleTests.swift
+//  ObservationTrackingExampleTests
 //
 //  Created by Peter Steinberger on 10.06.25.
 //
 
 import Testing
 import Observation
-@testable import NSObservationTrackingExample
+@testable import ObservationTrackingExample
 
 @Suite("SharedDataModel Tests")
 @MainActor

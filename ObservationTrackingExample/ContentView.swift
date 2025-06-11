@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  NSObservationTrackingExample
+//  ObservationTrackingExample
 //
 //  Created by Peter Steinberger on 10.06.25.
 //

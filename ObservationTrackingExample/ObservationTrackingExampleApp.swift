@@ -1,6 +1,6 @@
 //
-//  NSObservationTrackingExampleApp.swift
-//  NSObservationTrackingExample
+//  ObservationTrackingExampleApp.swift
+//  ObservationTrackingExample
 //
 //  Created by Peter Steinberger on 10.06.25.
 //
@@ -10,7 +10,7 @@ import AppKit
 import Observation
 
 @main
-struct NSObservationTrackingExampleApp: App {
+struct ObservationTrackingExampleApp: App {
     @State private var appState = AppState()
     
     var body: some Scene {

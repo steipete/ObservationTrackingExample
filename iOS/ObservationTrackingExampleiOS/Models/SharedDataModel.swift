@@ -1,6 +1,6 @@
 //
 //  SharedDataModel.swift
-//  NSObservationTrackingExample
+//  ObservationTrackingExample
 //
 //  Observable data model for iOS with automatic observation tracking
 //

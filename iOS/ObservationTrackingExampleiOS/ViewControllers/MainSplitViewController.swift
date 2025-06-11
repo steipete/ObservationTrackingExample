@@ -1,6 +1,6 @@
 //
 //  MainSplitViewController.swift
-//  NSObservationTrackingExample
+//  ObservationTrackingExample
 //
 //  Main split view controller that manages the master-detail interface
 //

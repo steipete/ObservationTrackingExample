@@ -1,13 +1,13 @@
 //
-//  NSObservationTrackingExampleUITestsLaunchTests.swift
-//  NSObservationTrackingExampleUITests
+//  ObservationTrackingExampleUITestsLaunchTests.swift
+//  ObservationTrackingExampleUITests
 //
 //  Created by Peter Steinberger on 10.06.25.
 //
 
 import XCTest
 
-final class NSObservationTrackingExampleUITestsLaunchTests: XCTestCase {
+final class ObservationTrackingExampleUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

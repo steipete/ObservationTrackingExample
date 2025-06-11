@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  NSObservationTrackingExample
+//  ObservationTrackingExample
 //
 //  Scene lifecycle management for the observation tracking demo
 //

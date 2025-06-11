@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  NSObservationTrackingExample
+//  ObservationTrackingExample
 //
 //  Demonstrates automatic observation tracking in UIKit (iOS 18+)
 //

@@ -1,6 +1,6 @@
 //
 //  DetailViewController.swift
-//  NSObservationTrackingExample
+//  ObservationTrackingExample
 //
 //  Detail view controller showing the selected item
 //

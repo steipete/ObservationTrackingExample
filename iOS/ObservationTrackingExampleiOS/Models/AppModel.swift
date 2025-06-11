@@ -1,6 +1,6 @@
 //
 //  AppModel.swift
-//  NSObservationTrackingExample
+//  ObservationTrackingExample
 //
 //  App-wide model with custom trait for passing observable objects
 //
