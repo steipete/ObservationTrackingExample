@@ -150,9 +150,9 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
     private func createExplanationSection() -> NSView {
         let container = NSView()
         container.wantsLayer = true
+        container.layer?.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05).cgColor
         
-        let textView = NSTextView()
-        textView.string = """
+        let explanationText = """
         🔍 How AppKit Observation Works:
         
         1. In viewWillLayout(), we read properties from our @Observable model
@@ -162,34 +162,38 @@ final class AppKitViewController: NSViewController, NSTextFieldDelegate {
         
         ⚡️ Try it: Change values in either window and watch them sync instantly!
         """
-        textView.isEditable = false
-        textView.isSelectable = true
-        textView.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.05)
-        textView.font = .systemFont(ofSize: 12)
-        textView.textContainerInset = NSSize(width: 15, height: 15)
-        textView.isRichText = false
-        textView.drawsBackground = true
         
-        let scrollView = NSScrollView()
-        scrollView.documentView = textView
-        scrollView.hasVerticalScroller = false
-        scrollView.borderType = .noBorder
-        scrollView.autohidesScrollers = true
+        // Create a multi-line NSTextField
+        let textField = NSTextField(wrappingLabelWithString: explanationText)
+        textField.isEditable = false
+        textField.isSelectable = false
+        textField.isBordered = false
+        textField.drawsBackground = false
+        textField.backgroundColor = .clear
+        textField.font = .systemFont(ofSize: 12)
+        textField.textColor = .labelColor
+        textField.alignment = .left
         
-        container.addSubview(scrollView)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        // Ensure multi-line mode
+        textField.usesSingleLineMode = false
+        textField.cell?.wraps = true
+        textField.cell?.isScrollable = false
+        textField.lineBreakMode = .byWordWrapping
+        
+        container.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: container.topAnchor, constant: 20),
-            scrollView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
-            scrollView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
-            scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -20),
-            scrollView.heightAnchor.constraint(equalToConstant: 140)
+            textField.topAnchor.constraint(equalTo: container.topAnchor, constant: 20),
+            textField.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
+            textField.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
+            textField.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -20),
+            container.heightAnchor.constraint(greaterThanOrEqualToConstant: 160)
         ])
         
-        // Add rounded corners
-        scrollView.wantsLayer = true
-        scrollView.layer?.cornerRadius = 8
-        scrollView.layer?.masksToBounds = true
+        // Add rounded corners to container
+        container.wantsLayer = true
+        container.layer?.cornerRadius = 8
+        container.layer?.masksToBounds = true
         
         return container
     }
