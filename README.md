@@ -55,12 +55,20 @@ final class SharedDataModel: Sendable {
 
 ### 3. Use in UIKit/AppKit
 
-In UIKit's `viewWillLayoutSubviews()`:
+In UIKit's `updateProperties()` (iOS 26+) or `viewWillLayoutSubviews()` (earlier):
 ```swift
-override func viewWillLayoutSubviews() {
-    super.viewWillLayoutSubviews()
+@available(iOS 26.0, *)
+override func updateProperties() {
+    super.updateProperties()
     
     // Reading these properties automatically sets up tracking!
+    textLabel.text = model.message
+    counterLabel.text = "\(model.counter)"
+}
+
+override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
+    if #available(iOS 26.0, *) { return }
     textLabel.text = model.message
     counterLabel.text = "\(model.counter)"
 }
@@ -117,7 +125,8 @@ struct AppModelTrait: UITraitDefinition {
 rootViewController.traitOverrides.appModel = appModel
 
 // Access anywhere in the hierarchy
-override func viewWillLayoutSubviews() {
+@available(iOS 26.0, *)
+override func updateProperties() {
     guard let model = traitCollection.appModel else { return }
     // Use model properties - automatic tracking!
 }

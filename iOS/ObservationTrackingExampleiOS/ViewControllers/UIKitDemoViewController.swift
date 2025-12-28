@@ -78,7 +78,7 @@ class UIKitDemoViewController: UIViewController {
         This UIKit view demonstrates two powerful iOS 18+ features:
         
         1. Automatic Observation Tracking:
-        • UI updates automatically in viewWillLayoutSubviews()
+        • UI updates automatically in updateProperties() (iOS 26+)
         • No manual KVO or NotificationCenter needed
         • Just read properties and UIKit tracks dependencies
         
@@ -184,9 +184,21 @@ class UIKitDemoViewController: UIViewController {
     
     // MARK: - Observation
     
+    @available(iOS 26.0, *)
+    override func updateProperties() {
+        super.updateProperties()
+        updateFromModel()
+    }
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        
+        if #available(iOS 26.0, *) {
+            return
+        }
+        updateFromModel()
+    }
+
+    private func updateFromModel() {
         // This is where the magic happens!
         // UIKit tracks these property accesses and re-calls this method when they change
         

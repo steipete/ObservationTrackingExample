@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		ED31133C571980B1037504E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B4CF1A242C68A91E00D9B3F1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B4CF1A2B2C68A91E00D9B3F1;
+			remoteInfo = ObservationTrackingExampleiOS;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		B4CF1A2C2C68A91E00D9B3F1 /* ObservationTrackingExampleiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ObservationTrackingExampleiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C9B1E137C4863F5C9B46176 /* ObservationTrackingExampleiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ObservationTrackingExampleiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -29,10 +40,22 @@
 			path = ObservationTrackingExampleiOS;
 			sourceTree = "<group>";
 		};
+		73D37D734BE856A04E7B5588 /* ObservationTrackingExampleiOSTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ObservationTrackingExampleiOSTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B4CF1A292C68A91E00D9B3F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1731A959D2EFBD040EB01E8F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				B4CF1A2E2C68A91E00D9B3F1 /* ObservationTrackingExampleiOS */,
+				73D37D734BE856A04E7B5588 /* ObservationTrackingExampleiOSTests */,
 				B4CF1A2D2C68A91E00D9B3F1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				B4CF1A2C2C68A91E00D9B3F1 /* ObservationTrackingExampleiOS.app */,
+				5C9B1E137C4863F5C9B46176 /* ObservationTrackingExampleiOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -81,6 +106,27 @@
 			productReference = B4CF1A2C2C68A91E00D9B3F1 /* ObservationTrackingExampleiOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		4214A78654B1CE1F0ADBD517 /* ObservationTrackingExampleiOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB36620CBC368B1A629D3A3C /* Build configuration list for PBXNativeTarget "ObservationTrackingExampleiOSTests" */;
+			buildPhases = (
+				7E86DA0B1B1EE067D157DF2F /* Sources */,
+				1731A959D2EFBD040EB01E8F /* Frameworks */,
+				D774675003614222B59792B9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DC5642AE952E0CB7E4AD6E5A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				73D37D734BE856A04E7B5588 /* ObservationTrackingExampleiOSTests */,
+			);
+			name = ObservationTrackingExampleiOSTests;
+			productName = ObservationTrackingExampleiOSTests;
+			productReference = 5C9B1E137C4863F5C9B46176 /* ObservationTrackingExampleiOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -93,6 +139,10 @@
 				TargetAttributes = {
 					B4CF1A2B2C68A91E00D9B3F1 = {
 						CreatedOnToolsVersion = 16.0;
+					};
+					4214A78654B1CE1F0ADBD517 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = B4CF1A2B2C68A91E00D9B3F1;
 					};
 				};
 			};
@@ -111,12 +161,20 @@
 			projectRoot = "";
 			targets = (
 				B4CF1A2B2C68A91E00D9B3F1 /* ObservationTrackingExampleiOS */,
+				4214A78654B1CE1F0ADBD517 /* ObservationTrackingExampleiOSTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		B4CF1A2A2C68A91E00D9B3F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D774675003614222B59792B9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -133,7 +191,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7E86DA0B1B1EE067D157DF2F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DC5642AE952E0CB7E4AD6E5A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B4CF1A2B2C68A91E00D9B3F1 /* ObservationTrackingExampleiOS */;
+			targetProxy = ED31133C571980B1037504E0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B4CF1A532C68A91F00D9B3F1 /* Debug */ = {
@@ -313,6 +386,46 @@
 			};
 			name = Release;
 		};
+		603079E6B2D44863A75BC3CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y5PE65HELJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.ObservationTrackingExampleiOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ObservationTrackingExampleiOS.app/ObservationTrackingExampleiOS";
+			};
+			name = Debug;
+		};
+		0E86DC3787C71C048D09945B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y5PE65HELJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.steipete.ObservationTrackingExampleiOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ObservationTrackingExampleiOS.app/ObservationTrackingExampleiOS";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -330,6 +443,15 @@
 			buildConfigurations = (
 				B4CF1A562C68A91F00D9B3F1 /* Debug */,
 				B4CF1A572C68A91F00D9B3F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB36620CBC368B1A629D3A3C /* Build configuration list for PBXNativeTarget "ObservationTrackingExampleiOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				603079E6B2D44863A75BC3CF /* Debug */,
+				0E86DC3787C71C048D09945B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

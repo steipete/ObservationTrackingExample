@@ -202,9 +202,21 @@ class RootViewController: UIViewController {
     
     // MARK: - Theme Observation
     
+    @available(iOS 26.0, *)
+    override func updateProperties() {
+        super.updateProperties()
+        applyTheme()
+    }
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        
+        if #available(iOS 26.0, *) {
+            return
+        }
+        applyTheme()
+    }
+
+    private func applyTheme() {
         // Apply theme when it changes
         view.window?.overrideUserInterfaceStyle = model.sharedData.theme.userInterfaceStyle
     }
