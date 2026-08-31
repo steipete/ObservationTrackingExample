@@ -1,0 +1,54 @@
+name: Build and test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: ${{ matrix.platform }}
+    runs-on: macos-26
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macOS
+            scheme: ObservationTrackingExample
+            destination: platform=macOS
+          - platform: iOS
+            scheme: ObservationTrackingExampleiOS
+            destination: platform=iOS Simulator,name=iPhone 17,OS=26.5
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+      SCHEME: ${{ matrix.scheme }}
+      DESTINATION: ${{ matrix.destination }}
+    steps:
+      - name: Check out the triggering commit
+        # This public repository needs no credentials or checkout action dependency.
+        run: |
+          git init .
+          git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
+          git fetch --no-tags --depth=1 origin "$GITHUB_SHA"
+          git checkout --detach FETCH_HEAD
+      - name: Show toolchain
+        run: xcodebuild -version
+      - name: Build and run all tests
+        run: |
+          xcodebuild \
+            -workspace ObservationTrackingExample.xcworkspace \
+            -scheme "$SCHEME" \
+            -destination "$DESTINATION" \
+            -derivedDataPath build/DerivedData \
+            -parallel-testing-enabled NO \
+            CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM= \
+            build test
