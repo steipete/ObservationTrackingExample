@@ -19,9 +19,26 @@ The project includes:
 
 ## Requirements
 
-- iOS 18.0+ / macOS 15.0+
-- Xcode 16.0+
+- iOS 18.0+ / macOS 15.5+
+- Xcode 26.0+ (the iOS 26 APIs require the matching SDK, even with availability checks)
 - Swift 6.0+
+
+## Build and Test
+
+The workspace contains both examples and their test suites. There are no third-party dependencies to install.
+
+```sh
+xcodebuild -workspace ObservationTrackingExample.xcworkspace \
+  -scheme ObservationTrackingExample -destination 'platform=macOS' build test
+
+xcodebuild -workspace ObservationTrackingExample.xcworkspace \
+  -scheme ObservationTrackingExampleiOS \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' build test
+```
+
+Choose an installed iOS simulator from `xcrun simctl list devices available` if your Xcode installation has different runtimes. Select your own signing team for local development.
+
+GitHub Actions builds both apps and runs all macOS unit/UI tests and iOS unit tests on macOS 26 with Xcode 26.6. The workflow runs for pull requests and pushes to `main`, using ad-hoc signing on disposable runners so no signing credentials are required.
 
 ## How It Works
 
