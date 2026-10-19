@@ -16,7 +16,7 @@ concurrency:
 jobs:
   test:
     name: ${{ matrix.platform }}
-    runs-on: macos-26
+    runs-on: xcode-27
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -27,9 +27,8 @@ jobs:
             destination: platform=macOS
           - platform: iOS
             scheme: ObservationTrackingExampleiOS
-            destination: platform=iOS Simulator,name=iPhone 17,OS=26.5
+            destination: platform=iOS Simulator
     env:
-      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
       SCHEME: ${{ matrix.scheme }}
       DESTINATION: ${{ matrix.destination }}
     steps:
@@ -42,6 +41,23 @@ jobs:
           git checkout --detach FETCH_HEAD
       - name: Show toolchain
         run: xcodebuild -version
+      - name: Select an installed iPhone simulator
+        if: matrix.platform == 'iOS'
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import subprocess
+
+          devices = json.loads(subprocess.check_output(["xcrun", "simctl", "list", "devices", "available", "--json"]))["devices"]
+          runtimes = sorted(devices, key=lambda runtime: tuple(map(int, re.findall(r"\d+", runtime))), reverse=True)
+          phones = [device for runtime in runtimes if ".iOS-" in runtime for device in devices[runtime] if device["name"].startswith("iPhone")]
+          if not phones:
+              raise SystemExit("No available iPhone simulator is installed")
+          with open(os.environ["GITHUB_ENV"], "a") as output:
+              output.write(f"DESTINATION=platform=iOS Simulator,id={phones[0]['udid']}\n")
+          PY
       - name: Build and run all tests
         run: |
           xcodebuild \
