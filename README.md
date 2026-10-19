@@ -33,12 +33,12 @@ xcodebuild -workspace ObservationTrackingExample.xcworkspace \
 
 xcodebuild -workspace ObservationTrackingExample.xcworkspace \
   -scheme ObservationTrackingExampleiOS \
-  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' build test
+  -destination 'platform=iOS Simulator,id=<simulator-UDID>' build test
 ```
 
-Choose an installed iOS simulator from `xcrun simctl list devices available` if your Xcode installation has different runtimes. Select your own signing team for local development.
+Replace `<simulator-UDID>` with an installed iPhone simulator's identifier from `xcrun simctl list devices available`. Select your own signing team for local development.
 
-GitHub Actions builds both apps and runs all macOS unit/UI tests and iOS unit tests on macOS 26 with Xcode 26.6. The workflow runs for pull requests and pushes to `main`, using ad-hoc signing on disposable runners so no signing credentials are required.
+GitHub Actions builds both apps and runs all macOS unit/UI tests and iOS unit tests on the Apple silicon `xcode-27` runner with its default Xcode 27 toolchain. It selects an installed iPhone simulator from the newest available iOS runtime and preserves the macOS 15.5 and iOS 18 deployment targets. The workflow runs for pull requests and pushes to `main`, using ad-hoc signing on disposable runners so no signing credentials are required.
 
 ## How It Works
 
