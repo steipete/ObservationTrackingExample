@@ -25,6 +25,8 @@ class RootViewController: UIViewController {
     // Labels
     private let uikitLabel = UILabel()
     private let swiftUILabel = UILabel()
+    private let separator = UIView()
+    private var separatorConstraints: [NSLayoutConstraint] = []
     
     // MARK: - Lifecycle
     
@@ -63,7 +65,6 @@ class RootViewController: UIViewController {
         swiftUIContainerView.backgroundColor = .systemBackground
         
         // Add separator line between views
-        let separator = UIView()
         separator.backgroundColor = .separator
         separator.translatesAutoresizingMaskIntoConstraints = false
         
@@ -90,14 +91,6 @@ class RootViewController: UIViewController {
         
         // Add separator (positioned manually)
         view.addSubview(separator)
-        
-        // Setup separator constraints based on orientation
-        NSLayoutConstraint.activate([
-            separator.widthAnchor.constraint(equalToConstant: 1),
-            separator.heightAnchor.constraint(equalToConstant: 1),
-            separator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            separator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
     }
     
     private func setupConstraints() {
@@ -165,39 +158,33 @@ class RootViewController: UIViewController {
         swiftUIHostingController.didMove(toParent: self)
     }
     
-    private func updateLayoutForTraitCollection() {
+    func updateLayoutForTraitCollection() {
         // Update stack view axis based on size class
         if traitCollection.horizontalSizeClass == .regular && traitCollection.verticalSizeClass == .regular {
             // iPad - side by side
             containerStackView.axis = .horizontal
-            
-            // Update separator for horizontal layout
-            if let separator = view.subviews.first(where: { $0 != containerStackView }) {
-                NSLayoutConstraint.deactivate(separator.constraints)
-                separator.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    separator.widthAnchor.constraint(equalToConstant: 1),
-                    separator.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                    separator.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                    separator.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-                ])
-            }
+            replaceSeparatorConstraints([
+                separator.widthAnchor.constraint(equalToConstant: 1),
+                separator.topAnchor.constraint(equalTo: containerStackView.topAnchor),
+                separator.bottomAnchor.constraint(equalTo: containerStackView.bottomAnchor),
+                separator.centerXAnchor.constraint(equalTo: containerStackView.centerXAnchor),
+            ])
         } else {
             // iPhone - stacked
             containerStackView.axis = .vertical
-            
-            // Update separator for vertical layout
-            if let separator = view.subviews.first(where: { $0 != containerStackView }) {
-                NSLayoutConstraint.deactivate(separator.constraints)
-                separator.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    separator.heightAnchor.constraint(equalToConstant: 1),
-                    separator.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                    separator.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                    separator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-                ])
-            }
+            replaceSeparatorConstraints([
+                separator.heightAnchor.constraint(equalToConstant: 1),
+                separator.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor),
+                separator.trailingAnchor.constraint(equalTo: containerStackView.trailingAnchor),
+                separator.centerYAnchor.constraint(equalTo: containerStackView.centerYAnchor),
+            ])
         }
+    }
+
+    private func replaceSeparatorConstraints(_ constraints: [NSLayoutConstraint]) {
+        NSLayoutConstraint.deactivate(separatorConstraints)
+        separatorConstraints = constraints
+        NSLayoutConstraint.activate(separatorConstraints)
     }
     
     // MARK: - Theme Observation
